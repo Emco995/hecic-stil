@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
+@theme {
+  --color-background: #0d0e12;
+  --color-foreground: #f3f4f6;
+
+  /* Zlatne šampanjac nijanse usklađene s logom */
+  --color-gold-50: #faf8f2;
+  --color-gold-100: #f4f0e2;
+  --color-gold-200: #ebd9b8;
+  --color-gold-300: #dfbd85;
+  --color-gold-400: #d4a758;
+  --color-gold-500: #c8933b;
+  --color-gold-accent: #D7B576;
+
+  /* Tamne antracit nijanse */
+  --color-dark-950: #0b0c0e;
+  --color-dark-900: #111216;
+  --color-dark-850: #181a1f;
+  --color-dark-800: #22252c;
+  --color-dark-700: #2e323b;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0d0e12;
+  --foreground: #f3f4f6;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  overflow-x: hidden;
+}
+
+/* Globalni cursor pointer na svim klikabilnim elementima */
+button, 
+a, 
+input[type="range"], 
+input[type="checkbox"], 
+input[type="radio"], 
+select,
+[role="button"] {
+  cursor: pointer !important;
+}
+
+/* Prilagođeni scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0e12;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2e323b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4a758;
+}
+
+/* Suptilni glow efekti */
+.gold-glow {
+  box-shadow: 0 0 25px -5px rgba(215, 181, 118, 0.3);
+}
+
+.gold-glow-subtle {
+  box-shadow: 0 0 15px -3px rgba(215, 181, 118, 0.15);
 }
