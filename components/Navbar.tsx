@@ -22,6 +22,7 @@ export default function Navbar() {
     { name: "Galerija radova", href: "#galerija" },
     { name: "Digitron & Mjerenje", href: "#kalkulator" },
     { name: "Plaćanje", href: "#placanje" },
+    { name: "FAQ", href: "#faq" },
     { name: "Kontakt", href: "#kontakt" },
   ];
 
@@ -41,7 +42,7 @@ export default function Navbar() {
           </div>
 
           {/* Središnji desktop linkovi */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-7">
             {navLinks.map((link) => (
               <a
                 key={link.name}

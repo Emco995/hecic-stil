@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Preloader from "@/components/Preloader";
 import Gallery from "@/components/Gallery";
 import Calculator from "@/components/Calculator";
 import PaymentPortal from "@/components/PaymentPortal";
 import Reviews from "@/components/Reviews";
+import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -20,25 +22,43 @@ export default function Home() {
 
   return (
     <>
-      {/* Splash screen ulazna animacija */}
       {mounted && <Preloader />}
 
       <main className="min-h-screen bg-[#0d0e12] text-gray-100 selection:bg-gold-accent selection:text-[#0d0e12] relative">
         <Navbar />
 
-        {/* HERO SEKCIJA */}
+        {/* HERO SEKCIJA SA VISOKO-OPTIMIZOVANOM SLIKOM */}
         <section
           id="hero"
-          className="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden pt-24"
+          className="relative min-h-[92vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden pt-24"
         >
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#D7B576]/12 to-transparent rounded-full blur-[130px] pointer-events-none" />
+          {/* Pozadinska Hero slika */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80"
+              alt="Moderne kuhinje po mjeri Hećić Stil"
+              fill
+              priority
+              loading="eager"
+              fetchPriority="high"
+              unoptimized
+              sizes="100vw"
+              className="object-cover opacity-20 filter brightness-75 scale-105"
+            />
+            {/* Tamni gradient preljevi za savršen kontrast teksta */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-[#0d0e12]/80 to-[#0d0e12]/60" />
+            <div className="absolute inset-0 bg-radial-at-c from-transparent via-[#0d0e12]/70 to-[#0d0e12]" />
+          </div>
+
+          {/* Suptilna pozadinska svjetla */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#D7B576]/15 to-transparent rounded-full blur-[140px] pointer-events-none z-[1]" />
 
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-gold-accent text-xs uppercase tracking-[0.25em] font-medium mb-8"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] backdrop-blur-md border border-white/10 text-gold-accent text-xs uppercase tracking-[0.25em] font-medium mb-8"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Namještaj po mjeri</span>
@@ -60,7 +80,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
-              className="mt-6 text-base sm:text-lg text-gray-400 max-w-xl mx-auto font-light leading-relaxed"
+              className="mt-6 text-base sm:text-lg text-gray-300 max-w-xl mx-auto font-light leading-relaxed drop-shadow"
             >
               Projektiranje, izrada i montaža vrhunskih kuhinja, ugradbenih ormara i modernih stolova.
             </motion.p>
@@ -81,7 +101,7 @@ export default function Home() {
 
               <a
                 href="#galerija"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full font-semibold uppercase tracking-wider text-xs bg-transparent border border-white/20 hover:border-gold-accent hover:text-gold-accent text-gray-300 transition-all duration-300 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full font-semibold uppercase tracking-wider text-xs bg-black/40 backdrop-blur-md border border-white/20 hover:border-gold-accent hover:text-gold-accent text-gray-200 transition-all duration-300 cursor-pointer"
               >
                 <span>Pogledaj radove</span>
               </a>
@@ -101,6 +121,9 @@ export default function Home() {
         {/* ONLINE PLAĆANJE GOTOVIH RADOVA */}
         <PaymentPortal />
 
+        {/* ČESTO POSTAVLJANA PITANJA (FAQ) */}
+        <FAQ />
+
         {/* KONTAKT SEKCIJA */}
         <Contact />
 
@@ -114,11 +137,13 @@ export default function Home() {
               <p className="text-[11px] text-gray-500 mt-0.5">© 2026 Sva prava pridržana.</p>
             </div>
             <div className="flex items-center gap-6 text-xs tracking-wider">
-              <span>Bosna i Hercegovina</span>
+              <span>Gradačac, BiH</span>
               <span>•</span>
               <a href="#placanje" className="text-gold-accent hover:underline cursor-pointer">Online plaćanje</a>
               <span>•</span>
-              <a href="#kontakt" className="text-gray-400 hover:text-white cursor-pointer">Kontaktirajte nas</a>
+              <a href="#faq" className="text-gray-400 hover:text-white cursor-pointer">FAQ</a>
+              <span>•</span>
+              <a href="#kontakt" className="text-gray-400 hover:text-white cursor-pointer">Kontakt</a>
             </div>
           </div>
         </footer>
