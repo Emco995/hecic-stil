@@ -37,26 +37,27 @@ export default function Calculator() {
 
   // Izračun okvirne cijene u KM
   const calculateEstimate = () => {
-    let basePerMeter = 900; // Osnovna cijena po dužnom metru u KM
+    let basePerMeter = 900;
 
     if (itemType === "ormar") basePerMeter = 650;
     if (itemType === "stol") return material === "luxury" ? 1800 : material === "premium" ? 1200 : 750;
 
-    // Za kuhinju
     let multiplier = 1;
     if (kitchenLayout === "l-oblik") multiplier = 1.25;
     if (kitchenLayout === "u-oblik") multiplier = 1.55;
 
     let materialMultiplier = 1;
-    if (material === "premium") materialMultiplier = 1.35; // Akril / Mat medijapan
-    if (material === "luxury") materialMultiplier = 1.85; // Fenix / Keramika / Furnir
+    if (material === "premium") materialMultiplier = 1.35;
+    if (material === "luxury") materialMultiplier = 1.85;
 
     const total = Math.round(lengthMeters * basePerMeter * multiplier * materialMultiplier);
     return total;
   };
 
   const estimatedPrice = calculateEstimate();
-  const mjerenjeFeeKM = 50; // Simbolična naknada za izlazak na teren koja se odbija od posla
+  // Deterministički prikaz broja s tačkom kao razdjelnikom hiljada (sprječava SSR/Locale mismatch)
+  const formattedPrice = estimatedPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const mjerenjeFeeKM = 50;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +66,6 @@ export default function Calculator() {
 
   return (
     <section id="kalkulator" className="py-24 bg-[#0d0e12] relative overflow-hidden">
-      {/* Ambijentalno svjetlo */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[450px] bg-gold-accent/[0.04] rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -84,9 +84,8 @@ export default function Calculator() {
 
         <div className="bg-[#121318] border border-white/10 rounded-3xl p-6 sm:p-10 shadow-2xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            {/* LIJEVA STRANA: KONFIGURATOR */}
+            {/* LIJEVA STRANA */}
             <div className="lg:col-span-7 space-y-8">
-              {/* Odabir tipa namještaja */}
               <div>
                 <label className="block text-xs uppercase tracking-wider text-gray-400 font-semibold mb-3">
                   1. Šta želite opremiti?
@@ -113,7 +112,6 @@ export default function Calculator() {
                 </div>
               </div>
 
-              {/* Opcije specifične za kuhinje */}
               {itemType === "kuhinja" && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -146,7 +144,6 @@ export default function Calculator() {
                 </motion.div>
               )}
 
-              {/* Klizač za dimenzije */}
               {itemType !== "stol" && (
                 <div>
                   <div className="flex justify-between items-center mb-2">
@@ -174,7 +171,6 @@ export default function Calculator() {
                 </div>
               )}
 
-              {/* Nivo materijala */}
               <div>
                 <label className="block text-xs uppercase tracking-wider text-gray-400 font-semibold mb-3">
                   Nivo završne obrade i okova:
@@ -205,17 +201,16 @@ export default function Calculator() {
               </div>
             </div>
 
-            {/* DESNA STRANA: REZULTAT & FORMA */}
+            {/* DESNA STRANA */}
             <div className="lg:col-span-5 flex flex-col justify-between bg-[#181a20] border border-white/5 rounded-2xl p-6 sm:p-7">
               <div>
-                {/* Prikaz kalkulacije */}
                 <div className="pb-6 border-b border-white/10">
                   <span className="text-[11px] uppercase tracking-wider text-gray-400">
                     Procijenjeni raspon investicije
                   </span>
                   <div className="mt-1 flex items-baseline gap-2">
                     <span className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                      ~ {estimatedPrice.toLocaleString()}
+                      ~ {formattedPrice}
                     </span>
                     <span className="text-xl font-bold text-gold-accent">KM</span>
                   </div>
@@ -225,7 +220,6 @@ export default function Calculator() {
                   </p>
                 </div>
 
-                {/* Tab: Besplatan upit VS Rezervacija mjerenja */}
                 <div className="mt-6 flex rounded-xl bg-black/40 p-1 border border-white/5">
                   <button
                     type="button"
@@ -252,7 +246,6 @@ export default function Calculator() {
                   </button>
                 </div>
 
-                {/* Forma */}
                 {!isSubmitted ? (
                   <form onSubmit={handleSubmit} className="mt-5 space-y-3">
                     <div>
@@ -284,7 +277,6 @@ export default function Calculator() {
                       />
                     </div>
 
-                    {/* Odabir plaćanja ako je odabrana rezervacija mjerenja */}
                     {actionType === "rezervacija" && (
                       <div className="pt-2">
                         <p className="text-[11px] text-gray-400 mb-2 font-medium">
@@ -346,7 +338,7 @@ export default function Calculator() {
                       ) : (
                         <>
                           <span>Pošalji besplatan upit</span>
-                          <Send className="w-3.5 h-3.5" />
+                          <Send className="w-4 h-4" />
                         </>
                       )}
                     </button>
