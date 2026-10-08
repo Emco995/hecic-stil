@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -12,7 +12,8 @@ import {
   MapPin, 
   Layers,
   PlayCircle,
-  Video as VideoIcon
+  Video as VideoIcon,
+  Plus
 } from "lucide-react";
 
 type Category = "sve" | "kuhinje" | "ormari" | "stolovi";
@@ -100,7 +101,8 @@ const projects: ProjectItem[] = [
     categoryLabel: "Kuhinja po mjeri",
     location: "Brčko",
     material: "Besprijekorni visoki sjaj bez ručkica • Zlatni Hrast korpus i otok",
-    description: "Kombinacija bezvremenske bijele boje na medijapanu i radne ploče u toplom tonu zlatnog hrasta. Crna granitna sudopera i diskretne crne ručke daju snažan kontrast i unose dozu sofisticiranosti u cjelokupan izgled. Precizno izrađena po mjeri – moderna, funkcionalna i estetski uravnotežena.",
+    description:
+      "Kombinacija bezvremenske bijele boje na medijapanu i radne ploče u toplom tonu zlatnog hrasta. Crna granitna sudopera i diskretne crne ručke daju snažan kontrast i unose dozu sofisticiranosti u cjelokupan izgled. Precizno izrađena po mjeri – moderna, funkcionalna i estetski uravnotežena.",
     coverImage: "/galerija/kuhinja-visoki sjaj-zlatni hrast 2/1.jpg",
     coverVideo: "/galerija/kuhinja-visoki sjaj-zlatni hrast 2/video.mp4",
     media: [
@@ -113,7 +115,6 @@ const projects: ProjectItem[] = [
   },
 ];
 
-// Pomoćna komponenta za svaku karticu (rješava play/pause na hover i prikazuje poster sliku)
 function ProjectCard({
   project,
   onClick,
@@ -126,7 +127,7 @@ function ProjectCard({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const handleMouseEnter = () => {
+  const startPlayback = () => {
     if (videoRef.current) {
       videoRef.current
         .play()
@@ -135,7 +136,7 @@ function ProjectCard({
     }
   };
 
-  const handleMouseLeave = () => {
+  const stopPlayback = () => {
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
@@ -146,29 +147,28 @@ function ProjectCard({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.35, delay: idx * 0.05 }}
+      transition={{ duration: 0.4, delay: (idx % 6) * 0.06 }}
       onClick={onClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={startPlayback}
+      onMouseLeave={stopPlayback}
+      onTouchStart={startPlayback}
       className="group cursor-pointer rounded-3xl bg-[#121318] border border-white/5 hover:border-gold-accent/40 overflow-hidden shadow-xl transition-all duration-300 flex flex-col justify-between"
     >
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/40">
-        {/* Pozadinska slika (1.jpg) koja garantuje da NIKADA nema crnog ekrana */}
+      <div className="relative aspect-[16/11] w-full overflow-hidden bg-black/40">
         <Image
           src={project.coverImage}
           alt={project.title}
           fill
           unoptimized
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className={`object-cover transition-all duration-500 ease-out group-hover:scale-105 ${
             isPlaying ? "opacity-0" : "opacity-100"
           }`}
         />
 
-        {/* Video sloj koji se pokreće automatski na hover ili dodir */}
         <video
           ref={videoRef}
           src={project.coverVideo}
@@ -181,10 +181,8 @@ function ProjectCard({
           }`}
         />
 
-        {/* Gradient preliv */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#121318] via-[#121318]/20 to-transparent pointer-events-none" />
 
-        {/* Bedževi gore */}
         <div className="absolute top-4 left-4 flex items-center gap-2 pointer-events-none z-10">
           <div className="px-2.5 py-1 rounded-full bg-gold-accent/20 backdrop-blur-md border border-gold-accent/40 text-[10px] text-gold-accent flex items-center gap-1 font-semibold">
             <PlayCircle className="w-3.5 h-3.5 fill-gold-accent/30 text-gold-accent" />
@@ -201,22 +199,20 @@ function ProjectCard({
           <Maximize2 className="w-4 h-4 text-gold-accent" />
         </div>
 
-        {/* Lokacija */}
         <div className="absolute bottom-3 left-4 flex items-center gap-1 text-[11px] text-gray-300 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/5 z-10 pointer-events-none">
           <MapPin className="w-3 h-3 text-gold-accent" />
           <span>{project.location}</span>
         </div>
       </div>
 
-      {/* Tekst na kartici */}
-      <div className="p-6 sm:p-7">
+      <div className="p-5 sm:p-6">
         <span className="text-[10px] uppercase tracking-widest text-gold-accent font-semibold block mb-1">
           {project.categoryLabel}
         </span>
-        <h3 className="font-serif text-lg sm:text-xl font-bold text-white group-hover:text-gold-accent transition-colors leading-snug">
+        <h3 className="font-serif text-base sm:text-lg font-bold text-white group-hover:text-gold-accent transition-colors leading-snug line-clamp-1">
           {project.title}
         </h3>
-        <p className="text-xs text-gray-400 mt-2 font-light line-clamp-2 leading-relaxed">
+        <p className="text-xs text-gray-400 mt-1.5 font-light line-clamp-2 leading-relaxed">
           {project.material}
         </p>
       </div>
@@ -226,10 +222,10 @@ function ProjectCard({
 
 export default function Gallery() {
   const [activeTab, setActiveTab] = useState<Category>("sve");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const INITIAL_COUNT = 6;
+  const [visibleCount, setVisibleCount] = useState<number>(INITIAL_COUNT);
 
-  // Modal stanje
+  // Modal
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
 
@@ -237,15 +233,16 @@ export default function Gallery() {
     activeTab === "sve" ? true : item.category === activeTab
   );
 
-  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
-  const paginatedProjects = filteredProjects.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const visibleProjects = filteredProjects.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredProjects.length;
 
   const handleTabChange = (cat: Category) => {
     setActiveTab(cat);
-    setCurrentPage(1);
+    setVisibleCount(INITIAL_COUNT);
+  };
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 6);
   };
 
   const openModal = (project: ProjectItem) => {
@@ -253,29 +250,52 @@ export default function Gallery() {
     setActiveMediaIndex(0);
   };
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setSelectedProject(null);
     setActiveMediaIndex(0);
-  };
+  }, []);
 
-  const nextMedia = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!selectedProject) return;
-    setActiveMediaIndex((prev) => (prev + 1) % selectedProject.media.length);
-  };
+  const nextMedia = useCallback(
+    (e?: React.MouseEvent) => {
+      if (e) e.stopPropagation();
+      if (!selectedProject) return;
+      setActiveMediaIndex((prev) => (prev + 1) % selectedProject.media.length);
+    },
+    [selectedProject]
+  );
 
-  const prevMedia = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const prevMedia = useCallback(
+    (e?: React.MouseEvent) => {
+      if (e) e.stopPropagation();
+      if (!selectedProject) return;
+      setActiveMediaIndex((prev) =>
+        prev === 0 ? selectedProject.media.length - 1 : prev - 1
+      );
+    },
+    [selectedProject]
+  );
+
+  // Esc za izlaz, strelice za navigaciju
+  useEffect(() => {
     if (!selectedProject) return;
-    setActiveMediaIndex((prev) =>
-      prev === 0 ? selectedProject.media.length - 1 : prev - 1
-    );
-  };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+      } else if (e.key === "ArrowRight") {
+        nextMedia();
+      } else if (e.key === "ArrowLeft") {
+        prevMedia();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedProject, closeModal, nextMedia, prevMedia]);
 
   return (
     <section id="galerija" className="py-24 bg-[#0d0e12] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Zaglavlje */}
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-gold-accent text-xs uppercase tracking-widest font-semibold mb-3">
             <Sparkles className="w-3.5 h-3.5" />
@@ -285,11 +305,11 @@ export default function Gallery() {
             Naša djela govore sama
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-400 font-light">
-            Pređite mišem preko kuhinje za video pregled ili kliknite za kompletnu galeriju fotografija i detaljan opis.
+            Pregledajte video snimke i fotografije gotovih kuhinja i enterijera.
           </p>
         </div>
 
-        {/* Filter tabovi */}
+        {/* Tabovi */}
         <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
           {[
             { id: "sve", label: "Svi radovi" },
@@ -311,10 +331,10 @@ export default function Gallery() {
           ))}
         </div>
 
-        {/* KARTICE */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {/* 3 kolone x 2 reda */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
           <AnimatePresence mode="popLayout">
-            {paginatedProjects.map((project, idx) => (
+            {visibleProjects.map((project, idx) => (
               <ProjectCard
                 key={project.id}
                 project={project}
@@ -325,43 +345,28 @@ export default function Gallery() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Paginacija */}
-        {totalPages > 1 && (
-          <div className="mt-14 flex items-center justify-center gap-2">
+        {/* Dugme "Više radova" */}
+        {hasMore ? (
+          <div className="mt-14 text-center">
             <button
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-              className="cursor-pointer p-2.5 rounded-full bg-white/5 border border-white/10 text-gray-300 hover:text-gold-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              onClick={handleLoadMore}
+              className="cursor-pointer inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-bold bg-[#15171d] border border-gold-accent/40 text-gold-accent hover:bg-gold-accent hover:text-[#0d0e12] transition-all duration-300 shadow-[0_4px_25px_rgba(0,0,0,0.5)] group"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <span>Više radova</span>
+              <Plus className="w-4 h-4 transition-transform group-hover:rotate-90 duration-300" />
             </button>
-
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`cursor-pointer w-9 h-9 rounded-full text-xs font-semibold transition-all ${
-                  currentPage === i + 1
-                    ? "bg-gold-accent text-[#0d0e12] font-bold shadow"
-                    : "bg-white/5 border border-white/5 text-gray-400 hover:text-white"
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
-
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              disabled={currentPage === totalPages}
-              className="cursor-pointer p-2.5 rounded-full bg-white/5 border border-white/10 text-gray-300 hover:text-gold-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
+            <p className="text-[11px] text-gray-500 font-mono mt-3">
+              Prikazano {visibleProjects.length} od {filteredProjects.length} radova
+            </p>
           </div>
-        )}
+        ) : filteredProjects.length > INITIAL_COUNT ? (
+          <div className="mt-12 text-center text-xs text-gray-500 font-mono">
+            Prikazani su svi dostupni radovi iz ove kategorije.
+          </div>
+        ) : null}
       </div>
 
-      {/* POPUP / MODALNI PREGLED (PUN VIDEO + SLIKE + DETALJAN OPIS) */}
+      {/* POPUP / MODALNI PREGLED */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
@@ -379,16 +384,15 @@ export default function Gallery() {
               onClick={(e) => e.stopPropagation()}
               className="relative max-w-5xl w-full bg-[#121318] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]"
             >
-              {/* Dugme za zatvaranje */}
               <button
                 onClick={closeModal}
                 className="cursor-pointer absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-black/70 border border-white/10 text-white flex items-center justify-center hover:bg-gold-accent hover:text-black transition-all"
-                aria-label="Zatvori"
+                title="Zatvori (Esc)"
+                aria-label="Zatvori (Esc)"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              {/* Glavni prikaz u modalu (Video ili Slika) */}
               <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-black flex items-center justify-center overflow-hidden">
                 {selectedProject.media[activeMediaIndex].type === "video" ? (
                   <video
@@ -412,7 +416,6 @@ export default function Gallery() {
                   />
                 )}
 
-                {/* Strelice lijevo / desno */}
                 <button
                   onClick={prevMedia}
                   className="cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 border border-white/10 text-white flex items-center justify-center hover:bg-gold-accent hover:text-black transition-all"
@@ -427,7 +430,6 @@ export default function Gallery() {
                 </button>
               </div>
 
-              {/* Mini thumbnails traka */}
               <div className="bg-black/60 px-4 py-2.5 border-t border-white/5 flex items-center gap-2 overflow-x-auto">
                 {selectedProject.media.map((item, idx) => (
                   <button
@@ -459,7 +461,6 @@ export default function Gallery() {
                 </span>
               </div>
 
-              {/* Detaljni opis */}
               <div className="p-5 sm:p-7 flex flex-col md:flex-row justify-between items-start md:items-center gap-5 bg-[#15171d] border-t border-white/5 overflow-y-auto">
                 <div className="space-y-1.5 max-w-2xl">
                   <span className="text-xs uppercase tracking-widest text-gold-accent font-semibold">
