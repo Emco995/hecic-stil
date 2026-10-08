@@ -44,7 +44,7 @@ const projects: ProjectItem[] = [
     location: "Gradačac",
     material: "CNC profilisani lakirani MDF • Antik mesing ručkice • Blum Blumotion",
     description:
-      "Bezvremenski spoj tradicionalne elegancije i modernog komfora. Frontalni elementi izrađeni su od precizno glodanog medijapana lakiranog višeslojnim poliuretanskim lakom otpornim na vlagu. Unutrašnjost krase Blum Antaro soft-close ladice punog izvlačenja sa nosivošću do 65 kg i integrisana neutralna LED rasvjeta u donjoj zoni visećih elemenata.",
+      "Kuhinja u retro stilu od kvalitetnog medijapana, visoki sjaj u bijeloj boji. Elegantan i bezvremenski izgled, profinjena estetika, pažljivo osmišljen dizajn i visoka funkcionalnost. Sjajne površine koje dodatno naglašavaju osjećaj čistoće, svjetlosti i prostranosti. Precizna izrada i kvalitetni materijali osiguravaju dugotrajnost i praktičnost u svakodnevnoj upotrebi.Hvala na ukazanom povjerenju!",
     coverImage: "/galerija/kuhinja-lakirani medijapan-retro/1.jpg",
     coverVideo: "/galerija/kuhinja-lakirani medijapan-retro/video.mp4",
     media: [
@@ -82,7 +82,7 @@ const projects: ProjectItem[] = [
     location: "Sarajevo",
     material: "Akril visoki sjaj • Egger Zlatni Hrast tekstura • Skriveni Gola profili",
     description:
-      "Topli kontrast modernog hladnog akrila i prirodne teksture hrasta. Radna ploča debljine 38 mm usklađena je sa zidnim panelom bez vidljivih fugni, što znatno olakšava čišćenje. Kuhinja posjeduje usklađeni prostor za ugradbene aparate, duboke ostavinske ladice i diskretne LED profile urezane u korpus.",
+      "Kuhinja po mjeri u bijelom visokom sjaju i toplim tonovima zlatnog hrasta.Prilagođena prostoru, izrađena s preciznošću i stilom. ",
     coverImage: "/galerija/kuhinja-visoki sjaj-zlatni hrast/1.jpg",
     coverVideo: "/galerija/kuhinja-visoki sjaj-zlatni hrast/video.mp4",
     media: [
@@ -100,8 +100,7 @@ const projects: ProjectItem[] = [
     categoryLabel: "Kuhinja po mjeri",
     location: "Brčko",
     material: "Besprijekorni visoki sjaj bez ručkica • Zlatni Hrast korpus i otok",
-    description:
-      "Arhitektonski osmišljen prostor sa centralnim kuhinjskim otokom koji služi i kao šank i radna površina. Potpuni 'handleless' dizajn postiže se aluminijumskim profilima za otvaranje po cijeloj dužini. Opremljena integrisanim izvlačnim kantama za otpad i organizatorima pribora od prirodnog masiva.",
+    description: "Kombinacija bezvremenske bijele boje na medijapanu i radne ploče u toplom tonu zlatnog hrasta. Crna granitna sudopera i diskretne crne ručke daju snažan kontrast i unose dozu sofisticiranosti u cjelokupan izgled. Precizno izrađena po mjeri – moderna, funkcionalna i estetski uravnotežena.",
     coverImage: "/galerija/kuhinja-visoki sjaj-zlatni hrast 2/1.jpg",
     coverVideo: "/galerija/kuhinja-visoki sjaj-zlatni hrast 2/video.mp4",
     media: [
