@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Preloader from "@/components/Preloader";
@@ -14,25 +14,27 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const [contentReady, setContentReady] = useState(false);
 
   return (
     <>
-      {mounted && <Preloader />}
+      {/* Preloader stoji na najvišem z-indexu (9999) od prve milisekunde */}
+      <Preloader onComplete={() => setContentReady(true)} />
 
-      <main className="min-h-screen bg-[#0d0e12] text-gray-100 selection:bg-gold-accent selection:text-[#0d0e12] relative">
+      {/* Sadržaj stranice: u startu potpuno skriven i zaključan, glatko se pojavljuje kada preloader ispari */}
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: contentReady ? 1 : 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="min-h-screen bg-[#0d0e12] text-gray-100 selection:bg-gold-accent selection:text-[#0d0e12] relative"
+      >
         <Navbar />
 
-        {/* HERO SEKCIJA SA VISOKO-OPTIMIZOVANOM SLIKOM */}
+        {/* HERO SEKCIJA */}
         <section
           id="hero"
           className="relative min-h-[92vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden pt-24"
         >
-          {/* Pozadinska Hero slika */}
           <div className="absolute inset-0 z-0">
             <Image
               src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80"
@@ -45,12 +47,10 @@ export default function Home() {
               sizes="100vw"
               className="object-cover opacity-20 filter brightness-75 scale-105"
             />
-            {/* Tamni gradient preljevi za savršen kontrast teksta */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0d0e12] via-[#0d0e12]/80 to-[#0d0e12]/60" />
             <div className="absolute inset-0 bg-radial-at-c from-transparent via-[#0d0e12]/70 to-[#0d0e12]" />
           </div>
 
-          {/* Suptilna pozadinska svjetla */}
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-gradient-to-tr from-[#D7B576]/15 to-transparent rounded-full blur-[140px] pointer-events-none z-[1]" />
 
           <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -147,7 +147,7 @@ export default function Home() {
             </div>
           </div>
         </footer>
-      </main>
+      </motion.main>
     </>
   );
 }

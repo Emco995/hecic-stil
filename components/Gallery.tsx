@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -10,8 +10,6 @@ import {
   X, 
   Maximize2, 
   MapPin, 
-  Layers,
-  PlayCircle,
   Video as VideoIcon,
   Plus
 } from "lucide-react";
@@ -31,8 +29,8 @@ interface ProjectItem {
   location: string;
   material: string;
   description: string;
-  coverImage: string;
-  coverVideo: string;
+  coverImage?: string;
+  coverVideo?: string;
   media: MediaItem[];
 }
 
@@ -45,9 +43,7 @@ const projects: ProjectItem[] = [
     location: "Gradačac",
     material: "CNC profilisani lakirani MDF • Antik mesing ručkice • Blum Blumotion",
     description:
-      "Kuhinja u retro stilu od kvalitetnog medijapana, visoki sjaj u bijeloj boji. Elegantan i bezvremenski izgled, profinjena estetika, pažljivo osmišljen dizajn i visoka funkcionalnost. Sjajne površine koje dodatno naglašavaju osjećaj čistoće, svjetlosti i prostranosti. Precizna izrada i kvalitetni materijali osiguravaju dugotrajnost i praktičnost u svakodnevnoj upotrebi.Hvala na ukazanom povjerenju!",
-    coverImage: "/galerija/kuhinja-lakirani medijapan-retro/1.jpg",
-    coverVideo: "/galerija/kuhinja-lakirani medijapan-retro/video.mp4",
+      "Kuhinja u retro stilu od kvalitetnog medijapana, visoki sjaj u bijeloj boji. Elegantan i bezvremenski izgled, profinjena estetika, pažljivo osmišljen dizajn i visoka funkcionalnost. Sjajne površine koje dodatno naglašavaju osjećaj čistoće, svjetlosti i prostranosti. Precizna izrada i kvalitetni materijali osiguravaju dugotrajnost i praktičnost u svakodnevnoj upotrebi. Hvala na ukazanom povjerenju!",
     media: [
       { type: "video", url: "/galerija/kuhinja-lakirani medijapan-retro/video.mp4" },
       ...Array.from({ length: 13 }, (_, i) => ({
@@ -65,8 +61,6 @@ const projects: ProjectItem[] = [
     material: "Profilisani MDF u visokom sjaju (Mirror Gloss) • Soft-close usporivači",
     description:
       "Izuzetno atraktivan koncept koji kombinuje klasične profilacije sa visokim sjajem koji vizualno proširuje prostor i stvara zrcalni efekat pod ambijentalnim svjetlom. Donji elementi uključuju skrivene kutne mehanizme za maksimalno iskorištenje prostora i tiho zatvaranje bez lupanja.",
-    coverImage: "/galerija/kuhinja-retro medijapan-visoki sjaj/1.jpg",
-    coverVideo: "/galerija/kuhinja-retro medijapan-visoki sjaj/video.mp4",
     media: [
       { type: "video", url: "/galerija/kuhinja-retro medijapan-visoki sjaj/video.mp4" },
       ...Array.from({ length: 12 }, (_, i) => ({
@@ -83,9 +77,7 @@ const projects: ProjectItem[] = [
     location: "Sarajevo",
     material: "Akril visoki sjaj • Egger Zlatni Hrast tekstura • Skriveni Gola profili",
     description:
-      "Kuhinja po mjeri u bijelom visokom sjaju i toplim tonovima zlatnog hrasta.Prilagođena prostoru, izrađena s preciznošću i stilom. ",
-    coverImage: "/galerija/kuhinja-visoki sjaj-zlatni hrast/1.jpg",
-    coverVideo: "/galerija/kuhinja-visoki sjaj-zlatni hrast/video.mp4",
+      "Kuhinja po mjeri u bijelom visokom sjaju i toplim tonovima zlatnog hrasta. Prilagođena prostoru, izrađena s preciznošću i stilom.",
     media: [
       { type: "video", url: "/galerija/kuhinja-visoki sjaj-zlatni hrast/video.mp4" },
       ...Array.from({ length: 11 }, (_, i) => ({
@@ -96,6 +88,23 @@ const projects: ProjectItem[] = [
   },
   {
     id: 4,
+    title: "Kuhinja od bijelog medijapana",
+    category: "kuhinje",
+    categoryLabel: "Kuhinja po mjeri",
+    location: "Modriča",
+    material: "Besprijekorni visoki sjaj bez ručkica • Zlatni Hrast korpus i otok",
+    description:
+      "Kuhinja od bijelog medijapana sa dubokim rezom na vratima, zidnom oblogom u mermernom dezenu i drvenom konstrukcijom od letvica koja zaokružuje ambijent. Dodatno, izrađena je i komoda za dnevni boravak u istom stilu.",
+    media: [
+      { type: "video", url: "/galerija/kuhinja-bijeli medijapan-visoki rez/video.mp4" },
+      ...Array.from({ length: 12 }, (_, i) => ({
+        type: "image" as const,
+        url: `/galerija/kuhinja-bijeli medijapan-visoki rez/${i + 1}.jpg`,
+      })),
+    ],
+  },
+  {
+    id: 5,
     title: "Kuhinja Visoki Sjaj & Zlatni Hrast (Model 2)",
     category: "kuhinje",
     categoryLabel: "Kuhinja po mjeri",
@@ -103,8 +112,6 @@ const projects: ProjectItem[] = [
     material: "Besprijekorni visoki sjaj bez ručkica • Zlatni Hrast korpus i otok",
     description:
       "Kombinacija bezvremenske bijele boje na medijapanu i radne ploče u toplom tonu zlatnog hrasta. Crna granitna sudopera i diskretne crne ručke daju snažan kontrast i unose dozu sofisticiranosti u cjelokupan izgled. Precizno izrađena po mjeri – moderna, funkcionalna i estetski uravnotežena.",
-    coverImage: "/galerija/kuhinja-visoki sjaj-zlatni hrast 2/1.jpg",
-    coverVideo: "/galerija/kuhinja-visoki sjaj-zlatni hrast 2/video.mp4",
     media: [
       { type: "video", url: "/galerija/kuhinja-visoki sjaj-zlatni hrast 2/video.mp4" },
       ...Array.from({ length: 12 }, (_, i) => ({
@@ -113,8 +120,25 @@ const projects: ProjectItem[] = [
       })),
     ],
   },
+  {
+    id: 6,
+    title: "Medijapan visoki sjaj sa urezanim rukohvatima",
+    category: "kuhinje",
+    categoryLabel: "Kuhinja po mjeri",
+    location: "Brčko",
+    material: "Besprijekorni visoki sjaj bez ručkica • Zlatni Hrast korpus i otok",
+    description:
+      "Kompletirana saradnja na opremanju stana u predivnoj atmosferi, sve rađeno po mjeri i želji u jednom modernom dizajnu enterijera, fronte od medijapana visoki sjaj sa urezanim rukohvatima kombinovano sa sivim dezenima.",
+    media: [
+      ...Array.from({ length: 12 }, (_, i) => ({
+        type: "image" as const,
+        url: `/galerija/kuhinja-medijapan-visoki sjaj c&b/${i + 1}.jpg`,
+      })),
+    ],
+  },
 ];
 
+// KOMPONENTA KARTICE SA KOLAŽOM (2 SLIKE LIJEVO + 3 SLIKE DESNO S '+X' OZNAKOM)
 function ProjectCard({
   project,
   onClick,
@@ -124,25 +148,17 @@ function ProjectCard({
   onClick: () => void;
   idx: number;
 }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const images = project.media.filter((m) => m.type === "image");
+  const hasVideo = project.media.some((m) => m.type === "video");
 
-  const startPlayback = () => {
-    if (videoRef.current) {
-      videoRef.current
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(() => {});
-    }
-  };
+  // Prvih 5 slika koje formiraju kolaž
+  const img1 = images[0]?.url || "/placeholder.jpg";
+  const img2 = images[1]?.url || img1;
+  const img3 = images[2]?.url || img1;
+  const img4 = images[3]?.url || img1;
+  const img5 = images[4]?.url || img1;
 
-  const stopPlayback = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-      setIsPlaying(false);
-    }
-  };
+  const remainingCount = images.length > 5 ? images.length - 5 : 0;
 
   return (
     <motion.div
@@ -152,60 +168,96 @@ function ProjectCard({
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4, delay: (idx % 6) * 0.06 }}
       onClick={onClick}
-      onMouseEnter={startPlayback}
-      onMouseLeave={stopPlayback}
-      onTouchStart={startPlayback}
-      className="group cursor-pointer rounded-3xl bg-[#121318] border border-white/5 hover:border-gold-accent/40 overflow-hidden shadow-xl transition-all duration-300 flex flex-col justify-between"
+      className="group cursor-pointer rounded-3xl bg-[#121318] border border-white/10 hover:border-gold-accent/40 overflow-hidden shadow-2xl transition-all duration-300 flex flex-col justify-between"
     >
-      <div className="relative aspect-[16/11] w-full overflow-hidden bg-black/40">
-        <Image
-          src={project.coverImage}
-          alt={project.title}
-          fill
-          unoptimized
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className={`object-cover transition-all duration-500 ease-out group-hover:scale-105 ${
-            isPlaying ? "opacity-0" : "opacity-100"
-          }`}
-        />
-
-        <video
-          ref={videoRef}
-          src={project.coverVideo}
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-            isPlaying ? "opacity-100 scale-105" : "opacity-0 pointer-events-none"
-          }`}
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-[#121318] via-[#121318]/20 to-transparent pointer-events-none" />
-
-        <div className="absolute top-4 left-4 flex items-center gap-2 pointer-events-none z-10">
-          <div className="px-2.5 py-1 rounded-full bg-gold-accent/20 backdrop-blur-md border border-gold-accent/40 text-[10px] text-gold-accent flex items-center gap-1 font-semibold">
-            <PlayCircle className="w-3.5 h-3.5 fill-gold-accent/30 text-gold-accent" />
-            <span>Video & Slike</span>
+      {/* KOLAŽ OKVIR (Aspect ratio 1:1 ili blago vertikalan, točno po uzoru na sliku) */}
+      <div className="relative aspect-[4/4] sm:aspect-[4/4.2] w-full overflow-hidden bg-[#1c1a17] p-2">
+        <div className="grid grid-cols-5 gap-1.5 h-full w-full rounded-2xl overflow-hidden">
+          {/* LIJEVA STRANA (3/5 širine: 2 velike vertikalno složene slike) */}
+          <div className="col-span-3 grid grid-rows-2 gap-1.5 h-full">
+            <div className="relative w-full h-full overflow-hidden bg-black/40">
+              <Image
+                src={img1}
+                alt={project.title}
+                fill
+                unoptimized
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              />
+            </div>
+            <div className="relative w-full h-full overflow-hidden bg-black/40">
+              <Image
+                src={img2}
+                alt={project.title}
+                fill
+                unoptimized
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              />
+            </div>
           </div>
 
-          <div className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-gray-300 flex items-center gap-1 font-mono">
-            <Layers className="w-3 h-3 text-gold-accent" />
-            <span>{project.media.length - 1} fotografija</span>
+          {/* DESNA STRANA (2/5 širine: 3 manje vertikalno složene slike) */}
+          <div className="col-span-2 grid grid-rows-3 gap-1.5 h-full">
+            <div className="relative w-full h-full overflow-hidden bg-black/40">
+              <Image
+                src={img3}
+                alt={project.title}
+                fill
+                unoptimized
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              />
+            </div>
+            <div className="relative w-full h-full overflow-hidden bg-black/40">
+              <Image
+                src={img4}
+                alt={project.title}
+                fill
+                unoptimized
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              />
+            </div>
+
+            {/* ZADNJA SLIKA SA "+X" OVERLAY-EM KAO NA SLICI */}
+            <div className="relative w-full h-full overflow-hidden bg-black/40">
+              <Image
+                src={img5}
+                alt={project.title}
+                fill
+                unoptimized
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              />
+              {remainingCount > 0 && (
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center">
+                  <span className="text-white font-serif font-bold text-xl sm:text-2xl tracking-wide drop-shadow-md">
+                    +{remainingCount}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        {/* Video bedž gore lijevo ako projekt ima video snimak montaže */}
+        {hasVideo && (
+          <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-gold-accent/40 text-[10px] text-gold-accent flex items-center gap-1.5 font-semibold">
+            <VideoIcon className="w-3.5 h-3.5 text-gold-accent" />
+            <span>Sadrži video</span>
+          </div>
+        )}
+
+        {/* Ikona za otvaranje gore desno */}
+        <div className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Maximize2 className="w-4 h-4 text-gold-accent" />
         </div>
 
-        <div className="absolute bottom-3 left-4 flex items-center gap-1 text-[11px] text-gray-300 bg-black/60 backdrop-blur-sm px-2.5 py-1 rounded-full border border-white/5 z-10 pointer-events-none">
+        {/* Lokacija dolje lijevo */}
+        <div className="absolute bottom-4 left-4 z-10 flex items-center gap-1 text-[11px] text-gray-200 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
           <MapPin className="w-3 h-3 text-gold-accent" />
           <span>{project.location}</span>
         </div>
       </div>
 
-      <div className="p-5 sm:p-6">
+      {/* DETALJI KARTICE */}
+      <div className="p-5 sm:p-6 bg-[#121318]">
         <span className="text-[10px] uppercase tracking-widest text-gold-accent font-semibold block mb-1">
           {project.categoryLabel}
         </span>
@@ -225,7 +277,6 @@ export default function Gallery() {
   const INITIAL_COUNT = 6;
   const [visibleCount, setVisibleCount] = useState<number>(INITIAL_COUNT);
 
-  // Modal
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
 
@@ -275,7 +326,7 @@ export default function Gallery() {
     [selectedProject]
   );
 
-  // Esc za izlaz, strelice za navigaciju
+  // Esc i strelice tastature
   useEffect(() => {
     if (!selectedProject) return;
 
@@ -305,7 +356,7 @@ export default function Gallery() {
             Naša djela govore sama
           </h2>
           <p className="mt-3 text-sm sm:text-base text-gray-400 font-light">
-            Pregledajte video snimke i fotografije gotovih kuhinja i enterijera.
+            Kliknite na kolaž kuhinje za pregled pojedinačnih slika visoke rezolucije i video snimaka montaže.
           </p>
         </div>
 
@@ -331,8 +382,8 @@ export default function Gallery() {
           ))}
         </div>
 
-        {/* 3 kolone x 2 reda */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+        {/* Mreža kartica kolaža: 3 kolone x 2 reda */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           <AnimatePresence mode="popLayout">
             {visibleProjects.map((project, idx) => (
               <ProjectCard
@@ -366,7 +417,7 @@ export default function Gallery() {
         ) : null}
       </div>
 
-      {/* POPUP / MODALNI PREGLED */}
+      {/* POPUP / MODALNI PREGLED (POJEDINAČNE SLIKE + VIDEO SA KONTROLAMA) */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
@@ -393,6 +444,7 @@ export default function Gallery() {
                 <X className="w-5 h-5" />
               </button>
 
+              {/* Glavni prozor (Video ili Pojedinačna slika) */}
               <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full bg-black flex items-center justify-center overflow-hidden">
                 {selectedProject.media[activeMediaIndex].type === "video" ? (
                   <video
@@ -403,7 +455,7 @@ export default function Gallery() {
                     className="w-full h-full object-contain"
                   >
                     <source src={selectedProject.media[activeMediaIndex].url} type="video/mp4" />
-                    Vaš preglednik ne podržava video.
+                    Vaš preglednik ne podržava video format.
                   </video>
                 ) : (
                   <Image
@@ -416,6 +468,7 @@ export default function Gallery() {
                   />
                 )}
 
+                {/* Strelice lijevo / desno */}
                 <button
                   onClick={prevMedia}
                   className="cursor-pointer absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 border border-white/10 text-white flex items-center justify-center hover:bg-gold-accent hover:text-black transition-all"
@@ -430,6 +483,7 @@ export default function Gallery() {
                 </button>
               </div>
 
+              {/* Mini thumbnails traka na dnu sa svim stavkama */}
               <div className="bg-black/60 px-4 py-2.5 border-t border-white/5 flex items-center gap-2 overflow-x-auto">
                 {selectedProject.media.map((item, idx) => (
                   <button
@@ -461,6 +515,7 @@ export default function Gallery() {
                 </span>
               </div>
 
+              {/* Opis i podaci o projektu */}
               <div className="p-5 sm:p-7 flex flex-col md:flex-row justify-between items-start md:items-center gap-5 bg-[#15171d] border-t border-white/5 overflow-y-auto">
                 <div className="space-y-1.5 max-w-2xl">
                   <span className="text-xs uppercase tracking-widest text-gold-accent font-semibold">
