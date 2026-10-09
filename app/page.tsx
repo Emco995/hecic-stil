@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Preloader from "@/components/Preloader";
+import About from "@/components/About";
 import Gallery from "@/components/Gallery";
 import Calculator from "@/components/Calculator";
 import PaymentPortal from "@/components/PaymentPortal";
@@ -14,26 +15,27 @@ import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function Home() {
-  const [contentReady, setContentReady] = useState(false);
+  // Prisilni povratak na vrh stranice pri svakom reloadu/refreshu
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   return (
     <>
-      {/* Preloader stoji na najvišem z-indexu (9999) od prve milisekunde */}
-      <Preloader onComplete={() => setContentReady(true)} />
+      <Preloader />
 
-      {/* Sadržaj stranice: u startu potpuno skriven i zaključan, glatko se pojavljuje kada preloader ispari */}
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: contentReady ? 1 : 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="min-h-screen bg-[#0d0e12] text-gray-100 selection:bg-gold-accent selection:text-[#0d0e12] relative"
-      >
+      <main className="min-h-screen bg-[#0d0e12] text-gray-100 selection:bg-gold-accent selection:text-[#0d0e12] relative">
         <Navbar />
 
         {/* HERO SEKCIJA */}
         <section
           id="hero"
-          className="relative min-h-[92vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden pt-24"
+          className="relative min-h-[92vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden pt-28"
         >
           <div className="absolute inset-0 z-0">
             <Image
@@ -109,7 +111,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* GALERIJA SA FILTRIRANJEM I PAGINACIJOM */}
+        {/* NOVA SEKCIJA: O NAMA */}
+        <About />
+
+        {/* GALERIJA SA KOLAŽ PRIKAZOM */}
         <Gallery />
 
         {/* DIGITRON & MJERENJE (U KM) */}
@@ -127,27 +132,50 @@ export default function Home() {
         {/* KONTAKT SEKCIJA */}
         <Contact />
 
-        {/* FOOTER */}
-        <footer className="py-12 bg-[#08090b] border-t border-white/10 text-gray-500">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6">
-            <div>
-              <p className="font-serif text-lg font-bold text-white uppercase tracking-wider">
-                Hećić Stil <span className="text-gold-accent text-xs font-sans font-normal">— Enterijeri</span>
-              </p>
-              <p className="text-[11px] text-gray-500 mt-0.5">© 2026 Sva prava pridržana.</p>
-            </div>
-            <div className="flex items-center gap-6 text-xs tracking-wider">
-              <span>Gradačac, BiH</span>
-              <span>•</span>
-              <a href="#placanje" className="text-gold-accent hover:underline cursor-pointer">Online plaćanje</a>
-              <span>•</span>
-              <a href="#faq" className="text-gray-400 hover:text-white cursor-pointer">FAQ</a>
-              <span>•</span>
-              <a href="#kontakt" className="text-gray-400 hover:text-white cursor-pointer">Kontakt</a>
+        {/* LUKSUZNI ČISTI FOOTER */}
+        <footer className="py-16 bg-[#07080a] border-t border-white/10 text-gray-400 relative overflow-hidden">
+          {/* Suptilni ambijentalni sjaj u podnožju */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-32 bg-gold-accent/5 blur-[100px] pointer-events-none" />
+
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10 space-y-6">
+            {/* Znatno veći klikabilni logotip koji vraća na vrh */}
+            <a
+              href="#hero"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="inline-block transition-transform duration-300 hover:scale-105 cursor-pointer group"
+              aria-label="Povratak na vrh"
+            >
+              <Image
+                src="/logo.svg"
+                alt="Hećić Stil Enterijeri"
+                width={280}
+                height={100}
+                unoptimized
+                className="h-20 sm:h-24 w-auto object-contain drop-shadow-[0_4px_24px_rgba(215,181,118,0.25)]"
+              />
+            </a>
+
+            {/* Diskretni slogan */}
+            <p className="text-xs sm:text-sm text-gray-400 font-light max-w-md leading-relaxed">
+              Projektiranje i izrada vrhunskog namještaja po mjeri. <br className="hidden sm:inline" />
+              Stil koji definira prostor, preciznost bez kompromisa.
+            </p>
+
+            {/* Linija razdvajanja */}
+            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-gold-accent/40 to-transparent" />
+
+            {/* Copyright i lokacija */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-[11px] text-gray-500 font-light tracking-wider">
+              <span>Gradačac, Bosna i Hercegovina</span>
+              <span className="hidden sm:inline">•</span>
+              <span>© 2026 Hećić Stil Enterijeri. Sva prava zadržana.</span>
             </div>
           </div>
         </footer>
-      </motion.main>
+      </main>
     </>
   );
 }

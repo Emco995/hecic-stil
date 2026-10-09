@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 
 interface LogoProps {
@@ -10,7 +9,6 @@ interface LogoProps {
 }
 
 export default function Logo({ className = "", size = "md" }: LogoProps) {
-  // Znatno veće fiksne visine u pikselima kako Tailwind ne bi komprimirao sliku
   const sizes = {
     sm: "h-12 w-auto",
     md: "h-16 sm:h-20 w-auto",
@@ -18,8 +16,21 @@ export default function Logo({ className = "", size = "md" }: LogoProps) {
     xl: "h-32 w-auto",
   };
 
+  const handleScrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    <Link href="/" className={`inline-flex items-center group select-none cursor-pointer py-1 ${className}`}>
+    <a
+      href="#hero"
+      onClick={handleScrollToTop}
+      className={`inline-flex items-center group select-none cursor-pointer py-1 ${className}`}
+      aria-label="Povratak na vrh stranice"
+    >
       <div className={`relative ${sizes[size]} transition-transform duration-300 group-hover:scale-105 flex items-center`}>
         <Image
           src="/logo.svg"
@@ -31,6 +42,6 @@ export default function Logo({ className = "", size = "md" }: LogoProps) {
           className="h-full w-auto object-contain max-h-[80px] drop-shadow-[0_4px_20px_rgba(215,181,118,0.35)]"
         />
       </div>
-    </Link>
+    </a>
   );
 }
