@@ -136,6 +136,57 @@ const projects: ProjectItem[] = [
       })),
     ],
   },
+  {
+    id: 7,
+    title: "Kuhinja Visoki Sjaj & Zlatni Hrast (Model 3)",
+    category: "kuhinje",
+    categoryLabel: "Kuhinja po mjeri",
+    location: "Brčko",
+    material: "Besprijekorni visoki sjaj bez ručkica • Zlatni Hrast korpus i otok",
+    description:
+      "Još jedna uspješno završena saradnja kod divnih domaćina!  -Bijela kuhinja visoki sjaj u kombinaciji sa radnom pločom i zidnom oblogom u dekoru zlatnog hrasta. 🔥Kontaktirajte nas i pretvorite svoju kuhinju u prostor iz snova!",
+    media: [
+      { type: "video", url: "/galerija/kuhinja-visoki sjaj-zlatni hrast 3/video.mp4" },
+      ...Array.from({ length: 13 }, (_, i) => ({
+        type: "image" as const,
+        url: `/galerija/kuhinja-visoki sjaj-zlatni hrast 3/${i + 1}.jpg`,
+      })),
+    ],
+  },
+  {
+    id: 8,
+    title: "Kuhinja Visoki Sjaj Akril Medijapan",
+    category: "kuhinje",
+    categoryLabel: "Kuhinja po mjeri",
+    location: "Brčko",
+    material: "Besprijekorni visoki sjaj bez ručkica • Zlatni Hrast korpus i otok",
+    description:
+      "zrađena od akril medijapana visokog sjaja, u besprijekornoj bijeloj boji, savršeno se uklapa sa sivim dezenom radne ploče, zidne obloge i ostrva. 🩶Ostrvo pruža dodatnu komociju i praktičnost, dok kombinacija boja i materijala unosi luksuz i toplinu u prostor. 📏 Svaka kuhinja iz naše ponude je unikat – rađena po mjeri, željama i potrebama kupca. Još jedan uspješno realizovan projekat iz naše ponude!",
+    media: [
+      { type: "video", url: "/galerija/kuhinja-akril medijapan-visoki sjaj/video.mp4" },
+      ...Array.from({ length: 9 }, (_, i) => ({
+        type: "image" as const,
+        url: `/galerija/kuhinja-akril medijapan-visoki sjaj/${i + 1}.jpg`,
+      })),
+    ],
+  },
+  {
+    id: 9,
+    title: "Kuhinja Visoki Sjaj Akril Medijapan Krem",
+    category: "kuhinje",
+    categoryLabel: "Kuhinja po mjeri",
+    location: "Brčko",
+    material: "Besprijekorni visoki sjaj bez ručkica • Zlatni Hrast korpus i otok",
+    description:
+      "Još jedna kuhinja po mjeri, rađena s puno pažnje prema svakoj želji i zamisli naših kupaca. Ova kuhinja od akril medijapana u prefinjenoj krem mat boji, upotpunjena dodatnim ostrvom, pruža savršen balans funkcionalnosti i estetike. Poseban pečat daje i TV komoda u dnevnom boravku, koja zajedno s kuhinjom stvara skladan i moderan prostor. Vaša vizija, naša izrada!",
+    media: [
+      { type: "video", url: "/galerija/kuhinja-akril medijapan krem-visoki sjaj/video.mp4" },
+      ...Array.from({ length: 10 }, (_, i) => ({
+        type: "image" as const,
+        url: `/galerija/kuhinja-akril medijapan krem-visoki sjaj/${i + 1}.jpg`,
+      })),
+    ],
+  },
 ];
 
 // KOMPONENTA KARTICE SA KOLAŽOM (2 SLIKE LIJEVO + 3 SLIKE DESNO S '+X' OZNAKOM)
